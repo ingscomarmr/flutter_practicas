@@ -12,6 +12,8 @@ class _InputPageState extends State<InputPage> {
   String _nombre = "";
   String _email = "";
   String _fecha = "";
+  String _genero = "Masculino";
+  List <String> _generoList =["Masculino", "Femenino"];
 
   //para poder manejar el valor de la fecha y ponerlo se utiliza controllers
   TextEditingController _fechaTextEditingController = new TextEditingController();
@@ -34,6 +36,8 @@ class _InputPageState extends State<InputPage> {
           Divider(),
           _crearFecha( context ),
           Divider(),
+          _crearDropDown(),  
+          Divider(),        
           _crearPersona(),
           Divider(),          
         ],
@@ -41,6 +45,47 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+
+  // ############################## GENERO DROPDONW  ##############################
+  List<DropdownMenuItem<String>> _getGeneroOptionsDmi(){
+
+    List<DropdownMenuItem<String>> generoItemsDmiList = List(); //puede ur new o no 
+    //otra forma del foreach
+    _generoList.forEach((item) { 
+      generoItemsDmiList.add(
+        DropdownMenuItem( //creamos el item de la lista
+          child: Text(item),
+          value: item,
+        )
+      );
+    });
+
+    return generoItemsDmiList;
+  }
+
+  Widget _crearDropDown() {
+
+    return Row( //para que quede mas ordendado en espacios ponemos un row
+      children: <Widget>[
+        Icon(Icons.menu),
+        SizedBox(width: 30.0,),
+        DropdownButton(
+          items: _getGeneroOptionsDmi(),
+          value: _genero,
+          onChanged: (opt){
+            setState(() {
+              print('Genero: $opt');
+              _genero = opt;
+            });
+            
+          },
+        ),
+      ],
+    );
+
+  }
+
+  // ############################## NOMBRE INPUT  ##############################
   Widget _crearInputs() {
     return  TextField(
       textCapitalization: TextCapitalization.sentences, //para que ponga en mayus cada palabra
@@ -64,10 +109,12 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  // ############################## RESULTADO NOMBRE Y EMAIL LISTTITLE  ##############################
   Widget _crearPersona() {
     return ListTile(
       title: Text('Nombre:$_nombre'),
       subtitle: Text('Email:$_email'),
+      trailing: Text('$_genero'),
     );
   }
 
@@ -91,6 +138,7 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  // ############################## PASSWORD INPUT  ##############################
   Widget _crearPassword() {
     return  TextField(
       obscureText: true, //para que no se muestre los caracteres
@@ -112,6 +160,7 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  // ############################## FECHA INPUT  ##############################
   Widget _crearFecha(BuildContext context) {
      return  TextField(         
       enableInteractiveSelection: false, //para que no puedan copiar el texto   
@@ -132,7 +181,7 @@ class _InputPageState extends State<InputPage> {
      );   
     
   }
-
+  // ############################## FEHCA MODAL PICKER PARA EL INPUT  ##############################
   //para manejar el datepicker necesitamos async y awaite ya que es un future
   _showDatePicker(BuildContext context) async {
     DateTime picker = await showDatePicker(      
@@ -150,4 +199,5 @@ class _InputPageState extends State<InputPage> {
       });
     }
   }
+
 }
