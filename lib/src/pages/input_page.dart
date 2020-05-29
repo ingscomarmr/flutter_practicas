@@ -135,11 +135,12 @@ class _InputPageState extends State<InputPage> {
 
   //para manejar el datepicker necesitamos async y awaite ya que es un future
   _showDatePicker(BuildContext context) async {
-    DateTime picker = await showDatePicker(
+    DateTime picker = await showDatePicker(      
+      helpText: 'Selecciona la fecha de tu nacimiento',
       context: context,                   //el contexto es requerido
       initialDate: new DateTime.now(),    //la fecha inicial
-      firstDate: new DateTime(2018),      //el atras que reconoce el picker para que no vaya mas atras del 2018
-      lastDate: new DateTime(2025)        //el tiempo maximo que alacanza el picker para que no pueda ir mas adelante
+      firstDate: new DateTime(DateTime.now().year - 80),      //el atras que reconoce el picker para que no vaya mas atras del 2018
+      lastDate: new DateTime.now()        //el tiempo maximo que alacanza el picker para que no pueda ir mas adelante
     );
 
     if(picker != null){
