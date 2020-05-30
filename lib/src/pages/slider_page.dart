@@ -9,6 +9,7 @@ class SliderPage extends StatefulWidget {
 
 class _SliderPageState extends State<SliderPage> {
   double _valorSlider = 200.0; //para el slider metemos este valor dentro de los limites
+  bool _bloquearSlider = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,8 @@ class _SliderPageState extends State<SliderPage> {
         child: Column(
           children: <Widget>[
             _crearSlider(),
+            _crearCheckBox(),
+            _crearSwitch(),
             _crearImagen(),
             //Expanded(child: _crearImagen()), //Expanded para que ocupe todo el spacio disponible
           ],
@@ -29,6 +32,7 @@ class _SliderPageState extends State<SliderPage> {
     );        
   }
 
+  // ##################################### SLIDER #####################################
   Widget _crearSlider() {
     return Slider(
       value: _valorSlider, //este valor debe estar entre el minumo y maximo
@@ -36,8 +40,8 @@ class _SliderPageState extends State<SliderPage> {
       max: 500, //valor tope
       activeColor: Colors.red, //para poner el color de del control
       divisions: 100, //para diviciones marcadas cada cierto puntaje
-      label: 'Tamaño de la imagen $_valorSlider', //al seleccionarlo muestra este titulo
-      onChanged: (valor){
+      label: 'Tamaño de la imagen $_valorSlider', //al seleccionarlo muestra este titulo      
+      onChanged: _bloquearSlider? null : (valor){ //si la funcion es null se bloquea el slider por eso el uso de un if ternario
         setState(() {
           _valorSlider = valor;
           //print('Valor del slider:$_valorSlider');
@@ -46,11 +50,46 @@ class _SliderPageState extends State<SliderPage> {
     );
   }
 
+  // ##################################### Image #####################################
   Widget _crearImagen() {
     return Image(
       image: AssetImage('assets/Pedifo01.PNG'), //img que se queda hasta que el recurso esta esta listo
       fit: BoxFit.contain, //para que no se salga de su paredes
-      width: _valorSlider,
+      width: _valorSlider, //para ajustar la img segun el valor del slider
+    );
+  }
+
+  // ##################################### Checkbox y CheckboxListTitle #####################################
+  Widget _crearCheckBox() {
+    return CheckboxListTile( //a diferencia del check, este viene preparado con un titulo
+      title: Text('Bloquear Slider'),
+      value: _bloquearSlider,      
+      onChanged: (v){
+        setState(() {
+          _bloquearSlider = v;
+        });
+      },
+    );
+    /*Checkbox( //check muy simple
+      value: _bloquearSlider,      
+      onChanged: (v){
+        setState(() {
+          _bloquearSlider = v;
+        });
+      },
+    );*/
+  }
+
+  // ##################################### Switch #####################################
+  Widget _crearSwitch() {
+    return SwitchListTile( //muy similar al CheckboxListTile
+      title: Text('Bloquear Slider'),
+      value: _bloquearSlider,
+      onChanged: (v){
+        setState(() {
+          _bloquearSlider = v;
+        });
+      },
     );
   }
 
