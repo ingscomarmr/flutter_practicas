@@ -89,7 +89,7 @@ class _InputPageState extends State<InputPage> {
   Widget _crearInputs() {
     return  TextField(
       textCapitalization: TextCapitalization.sentences, //para que ponga en mayus cada palabra
-      autofocus: true, //para enfocar
+      //autofocus: true, para enfocar
       decoration: InputDecoration(
         border: OutlineInputBorder( //por defecto tiene el underline que solo es de linea, pero con este border encierra el unput
           borderRadius: BorderRadius.circular(10.0)

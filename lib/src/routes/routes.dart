@@ -1,4 +1,5 @@
 //poner las rutas aparte
+import 'package:componentes/src/pages/slider_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:componentes/src/pages/alert_page.dart';
@@ -18,6 +19,7 @@ Map<String, WidgetBuilder> getAppRoutes(){
         'card'                  : (BuildContext context) => CardPage(),
         'animatedContainer'     : (BuildContext context) => AnimatedPage(),
         'inputs'                : (BuildContext context) => InputPage(),
+        'slider'                : (BuildContext context) => SliderPage(),
   };
 
   return routes;
