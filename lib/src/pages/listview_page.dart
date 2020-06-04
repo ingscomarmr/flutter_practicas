@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class ListaPage extends StatefulWidget {
@@ -13,6 +15,8 @@ class _ListaPageState extends State<ListaPage> {
 
   List<int> _indexImgList = List();
   int _ultimoItem = 0;
+  bool _estaCargando = false;
+
 
   @override
   void initState() { //cuando inicia la etapa se ejecuta
@@ -25,7 +29,8 @@ class _ListaPageState extends State<ListaPage> {
       
       if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){ //cuando la posicion del scroll esta en el maximo del scroll
         //si la posicion del scroll esta en el limite se ejecuta
-        _agregarImg(); //volvemos a ejecutar el metodos        
+        //_agregarImg(); //volvemos a ejecutar el metodos        
+        buscarDatos();
       }
 
     });
@@ -38,8 +43,19 @@ class _ListaPageState extends State<ListaPage> {
       appBar: AppBar(
         title: Text('Listas'),
       ),
-      body: _crearList(),
+      body: Stack(
+        children: <Widget>[
+          _crearList(),
+         _crearLoading(),
+        ],         
+      )
     );
+  }
+
+  @override
+  void dispose(){ //se dispara cuando se quita la pagina
+    super.dispose();
+    _scrollController.dispose(); //destruimos el scroll controller
   }
 
   Widget _crearList(){
@@ -66,6 +82,45 @@ class _ListaPageState extends State<ListaPage> {
     setState(() {
       
     });
+  }
+
+  //simulando future para retraso
+  Future<Null> buscarDatos() async{
+    _estaCargando = true;
+    setState(() {
+      
+    });
+
+
+    final duration = Duration(seconds: 3);
+    return new Timer(duration, respuestaHttp);
+  }
+
+  void respuestaHttp(){
+    _estaCargando = false;
+    _agregarImg();
+    _scrollController.animateTo(
+      _scrollController.position.pixels + 100,       
+      curve: Curves.fastOutSlowIn);
+  }
+
+  Widget _crearLoading() {
+    if(_estaCargando){
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Row(            
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+            ],            
+          ),
+          SizedBox(),
+        ],
+      );
+    }
+    return Container();
   }
 
 }
