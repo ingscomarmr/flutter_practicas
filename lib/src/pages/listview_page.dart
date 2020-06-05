@@ -98,10 +98,13 @@ class _ListaPageState extends State<ListaPage> {
 
   void respuestaHttp(){
     _estaCargando = false;
+    
+    _scrollController.animateTo( //recorre el scroll para que enseguida se cargan las siguientes img se recorra.
+      _scrollController.position.pixels + 300,       
+      curve: Curves.fastOutSlowIn,
+      duration: Duration(milliseconds: 750)
+    );
     _agregarImg();
-    _scrollController.animateTo(
-      _scrollController.position.pixels + 100,       
-      curve: Curves.fastOutSlowIn);
   }
 
   Widget _crearLoading() {
