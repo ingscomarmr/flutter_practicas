@@ -59,16 +59,20 @@ class _ListaPageState extends State<ListaPage> {
   }
 
   Widget _crearList(){
-    return ListView.builder( //se utiliza cuando los elementos de una lista a mostrar pueden ser infinitos o dinamicos
-      controller: _scrollController, //para poder controlar el scroll
-      itemCount: _indexImgList.length, //el numero de elemento esperadados
-      itemBuilder: (BuildContext context, int index){ //se encarga de redenderizar los elementos de la pagina
-        final imgs = _indexImgList[index];
-        return FadeInImage(          
-            image: NetworkImage('https://picsum.photos/500/300/?image=$imgs'),
-            placeholder: AssetImage('assets/loagin_img.gif'),
-        );
-      }, 
+
+    return RefreshIndicator( //este widget ayuda ha que si jalas hacia abajo la lista se realice el pull
+        onRefresh: _pullToRefreshImg, //para hace el pull refresh, obtiene las imagenes
+        child: ListView.builder( //se utiliza cuando los elementos de una lista a mostrar pueden ser infinitos o dinamicos
+          controller: _scrollController, //para poder controlar el scroll
+          itemCount: _indexImgList.length, //el numero de elemento esperadados
+          itemBuilder: (BuildContext context, int index){ //se encarga de redenderizar los elementos de la pagina
+            final imgs = _indexImgList[index];
+            return FadeInImage(          
+                image: NetworkImage('https://picsum.photos/500/300/?image=$imgs'),
+                placeholder: AssetImage('assets/loagin_img.gif'),
+            );
+          }, 
+        ),
     );
   }
 
@@ -124,6 +128,19 @@ class _ListaPageState extends State<ListaPage> {
       );
     }
     return Container();
+  }
+
+  //
+  Future<Null> _pullToRefreshImg() async {
+
+    final duracion = Duration(seconds: 2);
+    new Timer(duracion, (){
+      _indexImgList.clear(); //limpia la lista  
+      _ultimoItem++;
+      _agregarImg(); //para que cambie las imgs
+    });
+
+    return Future.delayed(duracion);
   }
 
 }
